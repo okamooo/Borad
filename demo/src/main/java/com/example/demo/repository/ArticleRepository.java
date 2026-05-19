@@ -14,7 +14,9 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.domain.Article;
 
 /**
- * articlesテーブルを操作するリポジトリ.
+ * 【初級者課題：手順1, 2, 5】articlesテーブルを操作するリポジトリ.
+ * 
+ * 1. 記事一覧のみ表示、2. 記事のみ投稿、5. 記事とコメントの削除 の各ステップで使用します。
  * 
  * @author taku
  */

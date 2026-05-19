@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>掲示板 (ex-bbs)</title>
+</head>
+<body>
+    <h1>掲示板</h1>
+
+    <!-- 記事投稿フォーム -->
+    <form th:action="@{/bbs/insertArticle}" th:object="${articleForm}" method="post">
+        <div>
+            投稿者名：<br>
+            <input type="text" th:field="*{name}">
+        </div>
+        <div>
+            投稿内容：<br>
+            <textarea rows="5" cols="40" th:field="*{content}"></textarea>
+        </div>
+        <div>
+            <button type="submit">記事投稿</button>
+        </div>
+    </form>
+    <br>
+
+    <!-- 記事一覧の表示領域 -->
+    <div th:each="article : ${articleList}">
+        
+        <hr>
+        
+        <!-- 記事本体の情報表示 -->
+        <div>
+            投稿者名：<span th:text="${article.name}">投稿者名</span><br>
+            投稿内容：<pre th:text="${article.content}">投稿内容</pre>
+            
+            <!-- 記事削除ボタン -->
+            <!-- 
+                【思考プロセス：削除ボタンの配置とデータ送信】
+                特定の記事を削除するためには、その記事のIDをサーバーへ送る必要があります。
+                ここでは記事ごとに個別の form を用意し、hiddenフィールドで articleId を埋め込んでいます。
+                誤操作を防ぐために type="submit" ボタンとして配置しています。
+            -->
+            <form th:action="@{/bbs/deleteArticle}" method="post">
+                <input type="hidden" name="articleId" th:value="${article.id}">
+                <button type="submit">記事削除</button>
+            </form>
+        </div>
+
+        <!-- コメント一覧の表示（二重ループ構造） -->
+        <div th:each="comment : ${article.commentList}">
+            <div style="margin-left: 20px;">
+                <hr style="border-style: dashed;">
+                コメント者名：<span th:text="${comment.name}">コメント者名</span><br>
+                コメント内容：<pre th:text="${comment.content}">コメント内容</pre>
+            </div>
+        </div>
+
+        <!-- コメント投稿フォーム -->
+        <div style="margin-left: 20px;">
+            <form th:action="@{/bbs/insertComment}" th:object="${commentForm}" method="post">
+                <input type="hidden" name="articleId" th:value="${article.id}">
+                <div>
+                    名前：<br>
+                    <input type="text" name="name">
+                </div>
+                <div>
+                    コメント：<br>
+                    <textarea rows="3" cols="30" name="content"></textarea>
+                </div>
+                <div>
+                    <button type="submit">コメント投稿</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+</body>
+</html>

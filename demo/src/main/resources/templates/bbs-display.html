@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!-- xmlns:th="http://www.thymeleaf.org" を指定することで、Thymeleafの便利な独自属性（th:xxx）が使えるようになります。 -->
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>掲示板表示専用画面</title>
+</head>
+<body>
+    <h1>掲示板 一覧表示</h1>
+
+    <!-- 
+        【画面表示の解説：二重ループ（ネスト）構造について】
+        Java側のデータ構造が「1つの記事（親）」に対して「複数のコメント（子）」というListを保持しているため、
+        HTML側でもその親子関係をそのまま表現する必要があります。
+        まず外側の th:each で『記事』をループし、そのすぐ内側でさらに『その記事に紐づくコメント』をループさせます。
+        このように th:each を二重（ネスト）にすることで、各記事のすぐ下に、その記事宛のコメントだけを
+        正しくまとめて表示させることができます。
+    -->
+    
+    <!-- 外側のループ：コントローラーから渡された "articleList" から記事を1件ずつ取り出します。 -->
+    <div th:each="article : ${articleList}">
+        <hr>
+        <!-- 記事の基本情報を表示します。 -->
+        <div>
+            投稿者：<span th:text="${article.name}">投稿者名が入ります</span><br>
+            内容：<pre th:text="${article.content}">記事の本文が入ります</pre>
+        </div>
+
+        <!-- 
+            内側のループ：現在処理している『記事（article）』が持っている『コメントリスト（commentList）』を取り出します。
+            記事の中にリストがある（Has-A関係）からこそ、このように article.commentList でアクセス可能です。
+        -->
+        <div th:each="comment : ${article.commentList}" style="margin-left: 30px;">
+            <hr style="border-style: dotted;">
+            <!-- コメントの情報を表示します。少し字下げ（margin-left）することで、記事との親子関係を視覚的に見やすくしています。 -->
+            <div>
+                コメント者：<span th:text="${comment.name}">コメント者名</span><br>
+                コメント内容：<pre th:text="${comment.content}">コメント本文</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- もし記事が1件もない場合の考慮として、空の状態も表現できるようにすると親切です。 -->
+    <div th:if="${#lists.isEmpty(articleList)}">
+        <p>現在、投稿されている記事はありません。</p>
+    </div>
+
+</body>
+</html>

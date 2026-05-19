@@ -13,7 +13,12 @@ import com.example.demo.repository.ArticleRepository;
 import com.example.demo.repository.CommentRepository;
 
 /**
- * 掲示板の表示機能のみを担当するコントローラー.
+ * 【初級者課題：手順1, 3】掲示板の表示機能のみを担当するコントローラー.
+ * 
+ * おすすめの作成順番：
+ * 1. 記事一覧のみ表示
+ * 3. コメントの表示
+ * に対応しています。
  * 
  * @author taku
  */

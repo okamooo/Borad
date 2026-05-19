@@ -14,7 +14,9 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.domain.Comment;
 
 /**
- * commentsテーブルを操作するリポジトリ.
+ * 【初級者課題：手順3, 4, 5】commentsテーブルを操作するリポジトリ.
+ * 
+ * 3. コメントの表示、4. コメントの投稿、5. 記事とコメントの削除 の各ステップで使用します。
  * 
  * @author taku
  */
